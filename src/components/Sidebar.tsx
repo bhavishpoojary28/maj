@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Wrench, QrCode, ScanLine, BrainCircuit,
   CalendarClock, FileText, BarChart3, Bell, Train, LogOut, X,
-  ShieldCheck, MessageSquareWarning, Settings, Home,
+  ShieldCheck, MessageSquareWarning, Settings,
   Info, Network, Boxes, Code2, Cpu, GitBranch, ChevronLeft, ChevronRight,
 } from 'lucide-react';
 import { useAuth } from '../lib/auth';
@@ -14,8 +14,8 @@ type NavGroup = { label: string; items: NavItem[] };
 
 const NAV_GROUPS: NavGroup[] = [
   { label: 'Overview', items: [
-    { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { to: '/analytics', label: 'Analytics', icon: BarChart3 },
+    { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: ['admin', 'engineer'] },
+    { to: '/analytics', label: 'Analytics', icon: BarChart3, roles: ['admin', 'engineer'] },
   ]},
   { label: 'Asset Management', items: [
     { to: '/fittings', label: 'Track Fittings', icon: Wrench },
@@ -31,15 +31,15 @@ const NAV_GROUPS: NavGroup[] = [
   { label: 'System', items: [
     { to: '/reports', label: 'Reports', icon: FileText },
     { to: '/notifications', label: 'Notifications', icon: Bell },
-    { to: '/settings', label: 'Settings', icon: Settings },
+    { to: '/settings', label: 'Settings', icon: Settings, roles: ['admin', 'engineer'] },
   ]},
   { label: 'Project Info', items: [
-    { to: '/about', label: 'About Project', icon: Info },
-    { to: '/modules', label: 'Modules', icon: Boxes },
-    { to: '/architecture', label: 'Architecture', icon: Network },
-    { to: '/tech-stack', label: 'Tech Stack', icon: Code2 },
-    { to: '/ai-workflow', label: 'AI Workflow', icon: Cpu },
-    { to: '/qr-lifecycle', label: 'QR Lifecycle', icon: GitBranch },
+    { to: '/about', label: 'About Project', icon: Info, roles: ['admin', 'engineer'] },
+    { to: '/modules', label: 'Modules', icon: Boxes, roles: ['admin', 'engineer'] },
+    { to: '/architecture', label: 'Architecture', icon: Network, roles: ['admin', 'engineer'] },
+    { to: '/tech-stack', label: 'Tech Stack', icon: Code2, roles: ['admin', 'engineer'] },
+    { to: '/ai-workflow', label: 'AI Workflow', icon: Cpu, roles: ['admin', 'engineer'] },
+    { to: '/qr-lifecycle', label: 'QR Lifecycle', icon: GitBranch, roles: ['admin', 'engineer'] },
   ]},
 ];
 
@@ -57,7 +57,7 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
       <aside className={`fixed inset-y-0 left-0 z-40 flex flex-col border-r border-slate-200 bg-white transition-all duration-300 dark:border-rail-800 dark:bg-rail-950 lg:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'} ${collapsed ? 'lg:w-[72px]' : 'lg:w-64'}`}>
         {/* Logo */}
         <div className="flex items-center justify-between gap-2 border-b border-slate-200 px-4 py-4 dark:border-rail-800">
-          <NavLink to="/dashboard" className="flex items-center gap-3 overflow-hidden">
+          <NavLink to={role === 'operator' ? '/complaints' : '/dashboard'} className="flex items-center gap-3 overflow-hidden">
             <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-rail-700 text-white shadow-sm"><Train size={22} /></div>
             {!collapsed && (
               <div className="min-w-0">
@@ -71,11 +71,14 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
 
         {/* Nav */}
         <nav className="flex-1 space-y-4 overflow-y-auto overflow-x-hidden px-2 py-4">
-          {NAV_GROUPS.map((group) => (
+          {NAV_GROUPS.map((group) => {
+            const visibleItems = group.items.filter((item) => !item.roles || item.roles.includes(role));
+            if (visibleItems.length === 0) return null;
+            return (
             <div key={group.label}>
               {!collapsed && <p className="mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">{group.label}</p>}
               <div className="space-y-0.5">
-                {group.items.map((item) => (
+                {visibleItems.map((item) => (
                   <NavLink key={item.to} to={item.to} onClick={onClose} title={collapsed ? item.label : undefined}
                     className={({ isActive }) => `nav-link ${isActive ? 'nav-link-active' : 'nav-link-inactive'} ${collapsed ? 'lg:justify-center lg:px-2' : ''}`}>
                     <item.icon size={18} className="flex-shrink-0" /> {!collapsed && <span className="truncate">{item.label}</span>}
@@ -83,10 +86,8 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
                 ))}
               </div>
             </div>
-          ))}
-          <NavLink to="/" onClick={onClose} className={`nav-link nav-link-inactive ${collapsed ? 'lg:justify-center lg:px-2' : ''}`} title={collapsed ? 'Landing Page' : undefined}>
-            <Home size={18} className="flex-shrink-0" /> {!collapsed && <span>Landing Page</span>}
-          </NavLink>
+            );
+          })}
         </nav>
 
         {/* User + Sign Out */}

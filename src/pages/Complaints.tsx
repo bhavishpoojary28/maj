@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { MessageSquareWarning, Search, Download, CheckCircle2, XCircle, Clock, Image as ImageIcon, Plus, Loader2, Upload, Camera } from 'lucide-react';
+import { MessageSquareWarning, Search, Download, Clock, Image as ImageIcon, Plus, Loader2, Upload, Camera } from 'lucide-react';
 import { PageHeader } from '../components/Topbar';
 import Modal from '../components/Modal';
 import { StatusBadge, Pagination, EmptyState, LoadingSpinner } from '../components/ui';
@@ -20,8 +20,9 @@ const PRIORITY_STYLES: Record<string, { border: string; dot: string; label: stri
 };
 
 export default function Complaints() {
-  const { session } = useAuth();
+  const { session, profile } = useAuth();
   const toast = useToast();
+  const canManageStatus = profile?.role === 'admin' || profile?.role === 'engineer';
   const [complaints, setComplaints] = useState<(Complaint & { fitting?: TrackFitting })[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -119,8 +120,9 @@ export default function Complaints() {
   }
 
   async function updateStatus(c: Complaint, status: Complaint['status']) {
-    const payload: any = { status, updated_at: new Date().toISOString() };
-    if (status === 'Resolved' || status === 'Rejected') payload.resolved_at = new Date().toISOString();
+    if (!canManageStatus) { toast('error', 'Only administrators and engineers can update complaint status.'); return; }
+    const isFinalStatus = status === 'Resolved' || status === 'Rejected';
+    const payload: any = { status, updated_at: new Date().toISOString(), resolved_at: isFinalStatus ? new Date().toISOString() : null };
     const { error } = await supabase.from('complaints').update(payload).eq('id', c.id);
     if (error) { toast('error', error.message); return; }
     await logAudit(session?.user.id ?? null, `update_complaint_${status.toLowerCase()}`, 'complaint', c.id, `${c.complaint_type} for ${c.qr_id} → ${status}`);
@@ -137,7 +139,7 @@ export default function Complaints() {
     <>
       <PageHeader title="Complaints" subtitle="View and manage complaints registered for track fittings">
         <button onClick={openRegister} className="btn-primary"><Plus size={16} /> Register Complaint</button>
-        <button onClick={handleExport} className="btn-secondary"><Download size={16} /> Export CSV</button>
+        {canManageStatus && <button onClick={handleExport} className="btn-secondary"><Download size={16} /> Export CSV</button>}
       </PageHeader>
 
       <div className="card mb-4 p-4">
@@ -204,11 +206,11 @@ export default function Complaints() {
                       </div>
                     )}
                   </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {c.status === 'Open' && <button onClick={() => updateStatus(c, 'In Progress')} className="btn-secondary py-1.5 text-xs">Start</button>}
-                    {c.status === 'In Progress' && <button onClick={() => updateStatus(c, 'Resolved')} className="btn-secondary py-1.5 text-xs"><CheckCircle2 size={14} /> Resolve</button>}
-                    {c.status !== 'Resolved' && c.status !== 'Rejected' && <button onClick={() => updateStatus(c, 'Rejected')} className="btn-secondary py-1.5 text-xs"><XCircle size={14} /> Reject</button>}
-                  </div>
+                  {canManageStatus && <label className="flex min-w-36 flex-col gap-1 text-xs font-medium text-slate-500 dark:text-slate-400">Update status
+                    <select value={c.status} onChange={(event) => updateStatus(c, event.target.value as Complaint['status'])} className="input py-1.5 text-xs">
+                      <option value="Open">Open</option><option value="In Progress">In Progress</option><option value="Resolved">Completed</option><option value="Rejected">Rejected</option>
+                    </select>
+                  </label>}
                 </div>
               </motion.div>
             );

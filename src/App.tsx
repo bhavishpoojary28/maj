@@ -1,10 +1,9 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './lib/auth';
 import { ThemeProvider } from './lib/theme';
 import { ToastProvider } from './lib/toast';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
-import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -37,12 +36,12 @@ export default function App() {
         <ToastProvider>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Landing />} />
+              <Route path="/" element={<Navigate to="/login" replace />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<ProtectedRoute roles={['admin']}><Layout><Register /></Layout></ProtectedRoute>} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/otp" element={<Otp />} />
-              <Route path="/dashboard" element={<ProtectedRoute><Layout><Dashboard /></Layout></ProtectedRoute>} />
+              <Route path="/dashboard" element={<ProtectedRoute roles={['admin', 'engineer']}><Layout><Dashboard /></Layout></ProtectedRoute>} />
               <Route path="/fittings" element={<ProtectedRoute><Layout><Fittings /></Layout></ProtectedRoute>} />
               <Route path="/qr-generator" element={<ProtectedRoute><Layout><QrGenerator /></Layout></ProtectedRoute>} />
               <Route path="/scanner" element={<ProtectedRoute><Layout><QrScanner /></Layout></ProtectedRoute>} />
@@ -50,16 +49,16 @@ export default function App() {
               <Route path="/maintenance" element={<ProtectedRoute><Layout><Maintenance /></Layout></ProtectedRoute>} />
               <Route path="/complaints" element={<ProtectedRoute><Layout><Complaints /></Layout></ProtectedRoute>} />
               <Route path="/reports" element={<ProtectedRoute><Layout><Reports /></Layout></ProtectedRoute>} />
-              <Route path="/analytics" element={<ProtectedRoute><Layout><Analytics /></Layout></ProtectedRoute>} />
+              <Route path="/analytics" element={<ProtectedRoute roles={['admin', 'engineer']}><Layout><Analytics /></Layout></ProtectedRoute>} />
               <Route path="/notifications" element={<ProtectedRoute><Layout><Notifications /></Layout></ProtectedRoute>} />
-              <Route path="/settings" element={<ProtectedRoute><Layout><Settings /></Layout></ProtectedRoute>} />
+              <Route path="/settings" element={<ProtectedRoute roles={['admin', 'engineer']}><Layout><Settings /></Layout></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><Layout><Profile /></Layout></ProtectedRoute>} />
-              <Route path="/about" element={<ProtectedRoute><Layout><About /></Layout></ProtectedRoute>} />
-              <Route path="/architecture" element={<ProtectedRoute><Layout><Architecture /></Layout></ProtectedRoute>} />
-              <Route path="/modules" element={<ProtectedRoute><Layout><Modules /></Layout></ProtectedRoute>} />
-              <Route path="/tech-stack" element={<ProtectedRoute><Layout><TechStack /></Layout></ProtectedRoute>} />
-              <Route path="/ai-workflow" element={<ProtectedRoute><Layout><AiWorkflow /></Layout></ProtectedRoute>} />
-              <Route path="/qr-lifecycle" element={<ProtectedRoute><Layout><QrLifecycle /></Layout></ProtectedRoute>} />
+              <Route path="/about" element={<ProtectedRoute roles={['admin', 'engineer']}><Layout><About /></Layout></ProtectedRoute>} />
+              <Route path="/architecture" element={<ProtectedRoute roles={['admin', 'engineer']}><Layout><Architecture /></Layout></ProtectedRoute>} />
+              <Route path="/modules" element={<ProtectedRoute roles={['admin', 'engineer']}><Layout><Modules /></Layout></ProtectedRoute>} />
+              <Route path="/tech-stack" element={<ProtectedRoute roles={['admin', 'engineer']}><Layout><TechStack /></Layout></ProtectedRoute>} />
+              <Route path="/ai-workflow" element={<ProtectedRoute roles={['admin', 'engineer']}><Layout><AiWorkflow /></Layout></ProtectedRoute>} />
+              <Route path="/qr-lifecycle" element={<ProtectedRoute roles={['admin', 'engineer']}><Layout><QrLifecycle /></Layout></ProtectedRoute>} />
               <Route path="/railradar" element={<ProtectedRoute><Layout><RailRadar /></Layout></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
