@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { User, Mail, ShieldCheck, Bell, Palette, Globe, Save, Loader2, CheckCircle2 } from 'lucide-react';
+import { User, Mail, ShieldCheck, Bell, Palette, Globe, Save, Loader2, CheckCircle2, UserPlus } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
 import { useToast } from '../lib/toast';
 import { ROLE_LABELS, RAILWAY_ZONES } from '../lib/supabase';
@@ -71,6 +72,14 @@ export default function Settings() {
               <label className="flex items-center justify-between"><span className="text-sm text-slate-700 dark:text-slate-300">Push Notifications</span><input type="checkbox" checked={pushNotif} onChange={(e) => setPushNotif(e.target.checked)} className="toggle" /></label>
             </div>
           </div>
+
+          {profile?.role === 'admin' && (
+            <div className="card">
+              <div className="mb-2 flex items-center gap-2"><UserPlus size={18} className="text-rail-600 dark:text-rail-400" /><h2 className="text-lg font-semibold text-slate-900 dark:text-white">Staff Accounts</h2></div>
+              <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">Create accounts for authorized railway staff.</p>
+              <Link to="/register" className="btn-primary w-full"><UserPlus size={16} /> Add Staff Account</Link>
+            </div>
+          )}
 
           {/* Appearance */}
           <div className="card">

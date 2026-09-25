@@ -26,7 +26,7 @@ export default function QrScanner() {
   const [error, setError] = useState('');
   const [scanHistory, setScanHistory] = useState<{ qrId: string; time: string }[]>([]);
   const [complaintModalOpen, setComplaintModalOpen] = useState(false);
-  const [complaintForm, setComplaintForm] = useState({ complaint_type: 'Damaged QR Marking', priority: 'Medium' as Complaint['priority'], description: '' });
+  const [complaintForm, setComplaintForm] = useState({ complaint_type: 'Component Damage', priority: 'Medium' as Complaint['priority'], description: '' });
   const [savingComplaint, setSavingComplaint] = useState(false);
   const [complaintPhoto, setComplaintPhoto] = useState<File | null>(null);
   const [complaintPhotoPreview, setComplaintPhotoPreview] = useState('');
@@ -137,7 +137,7 @@ export default function QrScanner() {
       });
       await logAudit(session?.user.id ?? null, 'register_complaint', 'complaint', null, `${complaintForm.complaint_type} for ${result.qr_id}`);
       setComplaintModalOpen(false);
-      setComplaintForm({ complaint_type: 'Damaged QR Marking', priority: 'Medium', description: '' });
+      setComplaintForm({ complaint_type: 'Component Damage', priority: 'Medium', description: '' });
       setMarkAsDefect(true);
       clearComplaintPhoto();
       toast('success', 'Complaint registered successfully');

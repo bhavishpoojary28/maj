@@ -78,8 +78,8 @@ export const MATERIALS = ['Manganese Steel', 'Carbon Steel', 'Cast Iron', 'Concr
 export const TRACK_TYPES = ['BG', 'MG', 'NG', 'Electrified BG', 'Non-Electrified BG'];
 
 export const COMPLAINT_TYPES = [
-  'Damaged QR Marking', 'Missing QR Code', 'Blurry QR Code', 'Component Damage',
-  'Misalignment', 'Corrosion', 'Loose Fitting', 'Wear and Tear', 'Other',
+  'Component Damage', 'Misalignment', 'Corrosion', 'Loose Fitting',
+  'Wear and Tear', 'Other',
 ];
 
 export const ROLE_LABELS: Record<Role, string> = {

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Train, Mail, Lock, User, AlertCircle, Loader2, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 import { RAILWAY_ZONES, type Role } from '../lib/supabase';
+import { PageHeader } from '../components/Topbar';
 
 const ROLES: { value: Role; label: string }[] = [
   { value: 'admin', label: 'Administrator' },
@@ -46,26 +47,27 @@ export default function Register() {
 
   if (done) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-rail-950 via-rail-900 to-rail-800 p-4">
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-md rounded-2xl border border-white/10 bg-white/95 p-8 text-center shadow-2xl dark:bg-rail-900/95">
+      <div className="space-y-6">
+        <PageHeader title="Add Staff Account" subtitle="Create an account for authorized railway personnel" />
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mx-auto w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-card dark:border-rail-800 dark:bg-rail-900">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600 dark:bg-emerald-500/15"><ShieldCheck size={28} /></div>
           <h2 className="text-xl font-bold text-slate-900 dark:text-white">Account created</h2>
           <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">Your staff account is ready. You can now sign in.</p>
-          <Link to="/login" className="btn-primary mt-5 w-full">Go to Sign In</Link>
+          <Link to="/settings" className="btn-primary mt-5 w-full">Back to Settings</Link>
         </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-rail-950 via-rail-900 to-rail-800 p-4">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="w-full max-w-md">
+    <div className="space-y-6">
+      <PageHeader title="Add Staff Account" subtitle="Create an account for authorized railway personnel" />
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="mx-auto w-full max-w-md">
         <div className="mb-6 text-center">
-          <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 backdrop-blur"><Train size={28} className="text-white" /></div>
-          <h1 className="text-2xl font-bold text-white">RailQR AI</h1>
-          <p className="mt-1 text-sm text-rail-200">Create your staff account</p>
+          <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-rail-700 text-white shadow-lg"><Train size={28} /></div>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Create your staff account</p>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/95 p-6 shadow-2xl backdrop-blur dark:bg-rail-900/95">
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-card dark:border-rail-800 dark:bg-rail-900">
           {error && <div className="mb-4 flex items-center gap-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-400"><AlertCircle size={16} />{error}</div>}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -91,7 +93,6 @@ export default function Register() {
             </div>
             <button type="submit" disabled={loading} className="btn-primary w-full">{loading ? <Loader2 size={18} className="animate-spin" /> : null}{loading ? 'Creating account...' : 'Create Account'}</button>
           </form>
-          <p className="mt-5 text-center text-sm text-slate-500 dark:text-slate-400">Already registered? <Link to="/login" className="font-semibold text-rail-600 hover:text-rail-700 dark:text-rail-400">Sign in</Link></p>
         </div>
       </motion.div>
     </div>

@@ -7,6 +7,6 @@ export default function ProtectedRoute({ children, roles }: { children: React.Re
   const { session, profile, loading } = useAuth();
   if (loading) return <LoadingScreen />;
   if (!session) return <Navigate to="/login" replace />;
-  if (roles && profile && !roles.includes(profile.role)) return <Navigate to="/dashboard" replace />;
+  if (roles && (!profile || !roles.includes(profile.role))) return <Navigate to="/dashboard" replace />;
   return <>{children}</>;
 }

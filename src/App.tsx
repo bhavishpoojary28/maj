@@ -27,6 +27,7 @@ import Modules from './pages/Modules';
 import TechStack from './pages/TechStack';
 import AiWorkflow from './pages/AiWorkflow';
 import QrLifecycle from './pages/QrLifecycle';
+import RailRadar from './pages/RailRadar';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -38,7 +39,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+              <Route path="/register" element={<ProtectedRoute roles={['admin']}><Layout><Register /></Layout></ProtectedRoute>} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/otp" element={<Otp />} />
               <Route path="/dashboard" element={<ProtectedRoute><Layout><Dashboard /></Layout></ProtectedRoute>} />
@@ -59,6 +60,7 @@ export default function App() {
               <Route path="/tech-stack" element={<ProtectedRoute><Layout><TechStack /></Layout></ProtectedRoute>} />
               <Route path="/ai-workflow" element={<ProtectedRoute><Layout><AiWorkflow /></Layout></ProtectedRoute>} />
               <Route path="/qr-lifecycle" element={<ProtectedRoute><Layout><QrLifecycle /></Layout></ProtectedRoute>} />
+              <Route path="/railradar" element={<ProtectedRoute><Layout><RailRadar /></Layout></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

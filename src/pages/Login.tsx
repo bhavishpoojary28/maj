@@ -121,7 +121,6 @@ export default function Login() {
                 {loading ? <><Loader2 size={18} className="animate-spin" /> Signing in...</> : <>Sign In <ArrowRight size={16} /></>}
               </button>
             </form>
-            <p className="mt-5 text-center text-sm text-slate-500 dark:text-slate-400">Don't have an account? <Link to="/register" className="font-semibold text-rail-600 hover:text-rail-700 dark:text-rail-400">Register here</Link></p>
           </div>
 
           <p className="mt-4 text-center text-sm text-slate-400"><Link to="/" className="hover:text-rail-600 dark:hover:text-rail-400">Back to home</Link></p>
