@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Train, QrCode, BrainCircuit, ShieldCheck, BarChart3,
-  ArrowRight, CheckCircle2, Cpu, Camera, FileText,
+  ArrowRight, CheckCircle2, Camera, FileText, Sparkles,
 } from 'lucide-react';
 
 const FEATURES = [
@@ -21,13 +21,13 @@ const STATS = [
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-white dark:bg-rail-950">
+    <div className="min-h-screen bg-[#fdf6f2] text-slate-900 transition-colors dark:bg-rail-950 dark:text-slate-100">
       {/* Nav */}
-      <nav className="fixed inset-x-0 top-0 z-50 border-b border-slate-200/50 bg-white/80 backdrop-blur-lg dark:border-rail-800/50 dark:bg-rail-950/80">
+      <nav className="fixed inset-x-0 top-0 z-50 border-b border-[#eedcd0] bg-[#fdf6f2]/85 backdrop-blur-lg dark:border-rail-800/50 dark:bg-rail-950/80">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-rail-700 text-white shadow"><Train size={20} /></div>
-            <span className="text-lg font-bold text-rail-800 dark:text-white">RailQR AI</span>
+            <span className="text-lg font-bold text-slate-900 dark:text-white">RailQR AI</span>
           </div>
           <div className="hidden items-center gap-8 md:flex">
             <a href="#features" className="text-sm font-medium text-slate-600 hover:text-rail-700 dark:text-slate-300 dark:hover:text-white">Features</a>
@@ -43,12 +43,14 @@ export default function Landing() {
 
       {/* Hero */}
       <section className="relative overflow-hidden pt-32 pb-20">
-        <div className="absolute inset-0 bg-gradient-to-b from-rail-50 via-white to-white dark:from-rail-900 dark:via-rail-950 dark:to-rail-950" />
-        <div className="absolute -top-40 right-0 h-96 w-96 rounded-full bg-rail-200/40 blur-3xl dark:bg-rail-700/20" />
-        <div className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-accent-200/30 blur-3xl dark:bg-accent-700/10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#fbede5] via-[#fdf6f2] to-[#fdf6f2] dark:from-rail-900 dark:via-rail-950 dark:to-rail-950" />
+        <div className="absolute -top-40 right-0 h-96 w-96 rounded-full bg-[#f7daca]/60 blur-3xl dark:bg-rail-700/20" />
+        <div className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-[#eedcd0]/50 blur-3xl dark:bg-accent-700/10" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-rail-200 bg-rail-50 px-4 py-1.5 text-xs font-semibold text-rail-700 dark:border-rail-700 dark:bg-rail-900 dark:text-rail-300"><Cpu size={13} /> AI-Powered Railway Asset Management</span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#eedcd0] bg-[#fbede5] px-4 py-1.5 text-xs font-semibold text-rail-700 shadow-sm dark:border-rail-700 dark:bg-rail-900 dark:text-rail-300">
+              <Sparkles size={13} /> AI-Powered Railway Asset Management
+            </span>
             <h1 className="mt-6 text-4xl font-bold leading-tight text-slate-900 dark:text-white sm:text-5xl lg:text-6xl">
               AI-Powered Asset Management for <span className="text-rail-700 dark:text-rail-400">Indian Railways</span>
             </h1>
@@ -64,13 +66,13 @@ export default function Landing() {
       </section>
 
       {/* Stats */}
-      <section id="stats" className="border-y border-slate-200 bg-slate-50 py-12 dark:border-rail-800 dark:bg-rail-900/50">
+      <section id="stats" className="border-y border-[#eedcd0] bg-[#fbede5] py-12 dark:border-rail-800 dark:bg-rail-900/50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
             {STATS.map((s, i) => (
               <motion.div key={s.label} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="text-center">
                 <p className="text-3xl font-bold text-rail-700 dark:text-rail-400 lg:text-4xl">{s.value}</p>
-                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{s.label}</p>
+                <p className="mt-1 text-sm font-medium text-slate-600 dark:text-slate-400">{s.label}</p>
               </motion.div>
             ))}
           </div>
@@ -87,7 +89,7 @@ export default function Landing() {
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {FEATURES.map((f, i) => (
               <motion.div key={f.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                className="group rounded-2xl border border-slate-200 bg-white p-6 transition hover:border-rail-300 hover:shadow-lg dark:border-rail-800 dark:bg-rail-900 dark:hover:border-rail-700">
+                className="group rounded-2xl border border-[#eedcd0] bg-white p-6 transition hover:border-rail-400 hover:shadow-lg dark:border-rail-800 dark:bg-rail-900 dark:hover:border-rail-700">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-rail-50 text-rail-700 transition group-hover:scale-110 dark:bg-rail-800 dark:text-rail-300"><f.icon size={24} /></div>
                 <h3 className="mt-4 text-lg font-semibold text-slate-900 dark:text-white">{f.title}</h3>
                 <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">{f.desc}</p>
@@ -98,13 +100,13 @@ export default function Landing() {
       </section>
 
       {/* Workflow */}
-      <section id="workflow" className="bg-slate-50 py-20 dark:bg-rail-900/30">
+      <section id="workflow" className="border-y border-[#eedcd0] bg-[#fbede5] py-20 dark:border-rail-800 dark:bg-rail-900/30">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white">How it works</h2>
             <p className="mt-4 text-slate-600 dark:text-slate-400">A streamlined workflow from marking to inspection to maintenance.</p>
           </div>
-          <div className="mt-12 grid gap-8 md:grid-cols-4">
+          <div className="mt-12 grid gap-8 md:grid-cols-3">
             {[
               { icon: QrCode, step: '01', title: 'Generate QR', desc: 'Create unique QR codes for each track fitting component.' },
               { icon: Camera, step: '02', title: 'AI Inspect', desc: 'Upload or capture images for automated quality inspection.' },
@@ -112,7 +114,7 @@ export default function Landing() {
             ].map((w, i) => (
               <motion.div key={w.step} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="relative">
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-rail-700 text-white shadow-lg"><w.icon size={26} /></div>
-                <span className="mt-4 block text-xs font-bold text-rail-400">{w.step}</span>
+                <span className="mt-4 block text-xs font-bold text-rail-600">{w.step}</span>
                 <h3 className="mt-1 text-lg font-semibold text-slate-900 dark:text-white">{w.title}</h3>
                 <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{w.desc}</p>
               </motion.div>
@@ -129,13 +131,13 @@ export default function Landing() {
             <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-white/5 blur-2xl" />
             <h2 className="relative text-3xl font-bold text-white">Ready to modernize your railway assets?</h2>
             <p className="relative mt-4 text-rail-200">Join the next generation of railway asset management with RailQR AI.</p>
-            <Link to="/register" className="relative mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-rail-800 shadow-lg transition hover:bg-rail-50">Get Started Free <ArrowRight size={16} /></Link>
+            <Link to="/register" className="relative mt-8 inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-rail-800 shadow-lg transition hover:bg-rail-50">Get Started Free <ArrowRight size={16} /></Link>
           </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 py-10 dark:border-rail-800">
+      <footer className="border-t border-[#eedcd0] py-10 dark:border-rail-800">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:px-6 lg:px-8">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-rail-700 text-white"><Train size={18} /></div>

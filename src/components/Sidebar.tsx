@@ -26,7 +26,6 @@ const NAV_GROUPS: NavGroup[] = [
     { to: '/inspection', label: 'AI Inspection', icon: BrainCircuit },
     { to: '/maintenance', label: 'Maintenance', icon: CalendarClock },
     { to: '/complaints', label: 'Complaints', icon: MessageSquareWarning },
-    { to: '/railradar', label: 'Live Train Tracker', icon: Train },
   ]},
   { label: 'System', items: [
     { to: '/reports', label: 'Reports', icon: FileText },

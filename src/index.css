@@ -1,11 +1,59 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root,
+html.theme-sophia,
+html:not(.theme-classic) {
+  /* Sophia Pro warm terracotta, peach & cream palette (Default) */
+  --color-rail-50: 253 246 242;   /* #fdf6f2 (soft peach cream body bg) */
+  --color-rail-100: 251 237 229;  /* #fbede5 (secondary cream) */
+  --color-rail-200: 247 218 202;  /* #f7daca (peach accent / hero bg) */
+  --color-rail-300: 238 220 208;  /* #eedcd0 (warm border) */
+  --color-rail-400: 210 152 120;  /* #d29878 (soft terracotta) */
+  --color-rail-500: 189 98 48;    /* #bd6230 (sienna chocolate) */
+  --color-rail-600: 168 89 45;    /* #a8592d (warm rust) */
+  --color-rail-700: 149 78 38;    /* #954e26 (signature Sophia button/accent) */
+  --color-rail-800: 124 56 18;    /* #7c3812 (deep CTA amber-brown) */
+  --color-rail-900: 77 52 34;     /* #4d3422 (espresso) */
+  --color-rail-950: 50 33 32;     /* #322120 (dark espresso footer) */
+}
+
+html.theme-sophia.dark,
+html.dark:not(.theme-classic) {
+  /* Sophia Pro Dark Mode (Warm Espresso Cocoa) */
+  --color-rail-50: 62 42 40;
+  --color-rail-100: 78 52 49;
+  --color-rail-200: 102 68 64;
+  --color-rail-300: 135 92 86;
+  --color-rail-400: 210 152 120;
+  --color-rail-500: 218 135 90;
+  --color-rail-600: 224 146 102;
+  --color-rail-700: 189 98 48;
+  --color-rail-800: 58 38 36;
+  --color-rail-900: 42 27 25;
+  --color-rail-950: 26 17 16;
+}
+
+html.theme-classic {
+  /* Classic Rail Blue (Option) */
+  --color-rail-50: 240 245 251;
+  --color-rail-100: 219 231 244;
+  --color-rail-200: 188 211 236;
+  --color-rail-300: 142 182 221;
+  --color-rail-400: 90 147 203;
+  --color-rail-500: 53 115 181;
+  --color-rail-600: 36 90 152;
+  --color-rail-700: 29 73 123;
+  --color-rail-800: 22 61 101;
+  --color-rail-900: 11 31 58;
+  --color-rail-950: 6 18 42;
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  html { font-family: 'Inter', system-ui, sans-serif; }
+  html { font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif; }
   body { @apply bg-slate-100 text-slate-900 antialiased dark:bg-rail-950 dark:text-slate-100; }
   * { @apply border-slate-200 dark:border-rail-800; }
   h1 { @apply text-2xl font-bold tracking-tight; }
@@ -135,7 +183,156 @@
   }
 }
 
+/* Sophia Pro Theme Styling (Active by Default across all pages) */
+html:not(.theme-classic) body {
+  background-color: #fdf6f2 !important;
+  color: #141211 !important;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif !important;
+}
+
+html:not(.theme-classic) .bg-slate-100 {
+  background-color: #fdf6f2 !important;
+}
+
+html:not(.theme-classic) .bg-slate-50 {
+  background-color: #fbede5 !important;
+}
+
+html.dark:not(.theme-classic) body {
+  background-color: #1a1110 !important;
+  color: #fbf5f2 !important;
+}
+
+html.dark:not(.theme-classic) .bg-slate-100 {
+  background-color: #1a1110 !important;
+}
+
+html:not(.theme-classic) h1,
+html:not(.theme-classic) h2,
+html:not(.theme-classic) h3,
+html:not(.theme-classic) .font-serif {
+  font-family: 'Merriweather', Georgia, serif !important;
+  letter-spacing: -0.015em;
+}
+
+html:not(.theme-classic) .card {
+  border-color: #eedcd0 !important;
+  border-radius: 1.25rem !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 14px -3px rgba(149, 78, 38, 0.08) !important;
+}
+
+html:not(.theme-classic) .card:hover {
+  border-color: #d29878 !important;
+  box-shadow: 0 4px 20px -2px rgba(149, 78, 38, 0.12) !important;
+}
+
+html.dark:not(.theme-classic) .card {
+  border-color: rgba(95, 60, 55, 0.45) !important;
+  background-color: rgba(38, 25, 23, 0.88) !important;
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.4) !important;
+}
+
+html:not(.theme-classic) .btn {
+  border-radius: 9999px !important;
+}
+
+html:not(.theme-classic) .btn-primary {
+  background-color: #954e26 !important;
+  color: #ffffff !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 2px 10px -1px rgba(149, 78, 38, 0.4) !important;
+}
+
+html:not(.theme-classic) .btn-primary:hover {
+  background-color: #7c3812 !important;
+}
+
+html:not(.theme-classic) .btn-secondary {
+  border-color: #eedcd0 !important;
+  background-color: #ffffff !important;
+  color: #4d3422 !important;
+  border-radius: 9999px !important;
+}
+
+html.dark:not(.theme-classic) .btn-secondary {
+  border-color: #553833 !important;
+  background-color: #2e1d1b !important;
+  color: #fbede5 !important;
+}
+
+html:not(.theme-classic) .nav-link {
+  border-radius: 9999px !important;
+}
+
+html:not(.theme-classic) .nav-link-active {
+  background-color: #954e26 !important;
+  color: #ffffff !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 2px 10px -1px rgba(149, 78, 38, 0.35) !important;
+}
+
+html:not(.theme-classic) .nav-link-inactive:hover {
+  background-color: #fbede5 !important;
+  color: #954e26 !important;
+}
+
+html.dark:not(.theme-classic) .nav-link-inactive:hover {
+  background-color: #382421 !important;
+  color: #f5cfbe !important;
+}
+
+html:not(.theme-classic) .input {
+  border-color: #cec1b9 !important;
+  border-radius: 0.85rem !important;
+  background-color: #fdfdfd !important;
+}
+
+html:not(.theme-classic) .input:focus {
+  border-color: #954e26 !important;
+  box-shadow: 0 0 0 3px rgba(149, 78, 38, 0.22) !important;
+}
+
+html.dark:not(.theme-classic) .input {
+  border-color: #4a3430 !important;
+  background-color: #201413 !important;
+  color: #fbede5 !important;
+}
+
+html.dark:not(.theme-classic) .input:focus {
+  border-color: #d29878 !important;
+  box-shadow: 0 0 0 3px rgba(210, 152, 120, 0.25) !important;
+}
+
+html:not(.theme-classic) aside {
+  border-color: #eedcd0 !important;
+  background-color: #ffffff !important;
+}
+
+html.dark:not(.theme-classic) aside {
+  border-color: rgba(95, 60, 55, 0.5) !important;
+  background-color: #1d1312 !important;
+}
+
+html:not(.theme-classic) header {
+  border-color: #eedcd0 !important;
+  background-color: rgba(253, 246, 242, 0.92) !important;
+}
+
+html.dark:not(.theme-classic) header {
+  border-color: rgba(95, 60, 55, 0.5) !important;
+  background-color: rgba(29, 19, 18, 0.92) !important;
+}
+
+html:not(.theme-classic) .badge {
+  border-radius: 9999px !important;
+}
+
+html:not(.theme-classic) nav {
+  border-color: #eedcd0 !important;
+}
+
 ::-webkit-scrollbar { width: 7px; height: 7px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.35); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(100,116,139,0.55); }
+::-webkit-scrollbar-thumb { background: rgba(149, 78, 38, 0.25); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(149, 78, 38, 0.45); }

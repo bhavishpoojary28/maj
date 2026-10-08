@@ -26,7 +26,7 @@ type Activity = { id: string; type: string; description: string; time: string };
 
 export default function Dashboard() {
   const { profile } = useAuth();
-  const { theme } = useTheme();
+  const { theme, palette: currentPalette } = useTheme();
   const [stats, setStats] = useState<Stats | null>(null);
   const [monthly, setMonthly] = useState<{ labels: string[]; pass: number[]; fail: number[] } | null>(null);
   const [zoneData, setZoneData] = useState<{ labels: string[]; data: number[] } | null>(null);
@@ -127,7 +127,10 @@ export default function Dashboard() {
   const isDark = theme === 'dark';
   const gridColor = isDark ? 'rgba(148,163,184,0.08)' : 'rgba(100,116,139,0.08)';
   const tickColor = isDark ? '#94a3b8' : '#64748b';
-  const palette = ['#245a98', '#3573b5', '#5a93cb', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#84cc16'];
+  const isSophia = currentPalette === 'sophia';
+  const palette = isSophia
+    ? ['#954e26', '#bd6230', '#da875a', '#d29878', '#7c3812', '#4d3422', '#10b981', '#ef4444', '#f59e0b', '#8b5cf6']
+    : ['#245a98', '#3573b5', '#5a93cb', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#84cc16'];
   const aiAccuracy = stats && stats.inspections > 0 ? Math.round((stats.passed / stats.inspections) * 100) : 0;
   const passRate = stats && stats.inspections > 0 ? Math.round((stats.passed / stats.inspections) * 100) : 0;
 
@@ -198,14 +201,14 @@ export default function Dashboard() {
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="card p-5">
           <h3 className="mb-4 text-base font-semibold text-slate-800 dark:text-slate-100">Top Component Types</h3>
           {componentData && componentData.labels.length > 0 ? (
-            <Bar data={{ labels: componentData.labels, datasets: [{ data: componentData.data, backgroundColor: '#3573b5', borderRadius: 6 }] }}
+            <Bar data={{ labels: componentData.labels, datasets: [{ data: componentData.data, backgroundColor: isSophia ? '#bd6230' : '#3573b5', borderRadius: isSophia ? 9999 : 6 }] }}
               options={{ responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: tickColor, maxRotation: 45 }, grid: { color: gridColor } }, y: { ticks: { color: tickColor }, grid: { color: gridColor }, beginAtZero: true } } }} />
           ) : <p className="py-8 text-center text-sm text-slate-400">No data</p>}
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="card p-5">
           <h3 className="mb-4 text-base font-semibold text-slate-800 dark:text-slate-100">Asset Growth Trend</h3>
           {trendData && (
-            <Line data={{ labels: trendData.labels, datasets: [{ label: 'Cumulative Fittings', data: trendData.data, borderColor: '#245a98', backgroundColor: 'rgba(36,90,152,0.1)', fill: true, tension: 0.4 }] }}
+            <Line data={{ labels: trendData.labels, datasets: [{ label: 'Cumulative Fittings', data: trendData.data, borderColor: isSophia ? '#954e26' : '#245a98', backgroundColor: isSophia ? 'rgba(149,78,38,0.12)' : 'rgba(36,90,152,0.1)', fill: true, tension: 0.4 }] }}
               options={{ responsive: true, plugins: { legend: { labels: { color: tickColor } } }, scales: { x: { ticks: { color: tickColor }, grid: { color: gridColor } }, y: { ticks: { color: tickColor }, grid: { color: gridColor }, beginAtZero: true } } }} />
           )}
         </motion.div>

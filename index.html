@@ -4,7 +4,29 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <title>RailQR AI — Indian Railways QR Marking System</title>
+    <script>
+      (function() {
+        try {
+          if (localStorage.getItem('railqr-palette-v2') !== 'set') {
+            localStorage.setItem('railqr-palette', 'sophia');
+            localStorage.setItem('railqr-palette-v2', 'set');
+          }
+          if (localStorage.getItem('railqr-theme-v2') !== 'set') {
+            localStorage.setItem('railqr-theme', 'light');
+            localStorage.setItem('railqr-theme-v2', 'set');
+          }
+          var p = localStorage.getItem('railqr-palette') || 'sophia';
+          var t = localStorage.getItem('railqr-theme') || 'light';
+          document.documentElement.classList.remove('dark', 'light', 'theme-classic', 'theme-sophia');
+          document.documentElement.classList.add(t);
+          document.documentElement.classList.add('theme-' + p);
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

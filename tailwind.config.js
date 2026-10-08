@@ -6,17 +6,17 @@ export default {
     extend: {
       colors: {
         rail: {
-          50: '#f0f5fb',
-          100: '#dbe7f4',
-          200: '#bcd3ec',
-          300: '#8eb6dd',
-          400: '#5a93cb',
-          500: '#3573b5',
-          600: '#245a98',
-          700: '#1d497b',
-          800: '#163d65',
-          900: '#0b1f3a',
-          950: '#06122a',
+          50: 'rgb(var(--color-rail-50) / <alpha-value>)',
+          100: 'rgb(var(--color-rail-100) / <alpha-value>)',
+          200: 'rgb(var(--color-rail-200) / <alpha-value>)',
+          300: 'rgb(var(--color-rail-300) / <alpha-value>)',
+          400: 'rgb(var(--color-rail-400) / <alpha-value>)',
+          500: 'rgb(var(--color-rail-500) / <alpha-value>)',
+          600: 'rgb(var(--color-rail-600) / <alpha-value>)',
+          700: 'rgb(var(--color-rail-700) / <alpha-value>)',
+          800: 'rgb(var(--color-rail-800) / <alpha-value>)',
+          900: 'rgb(var(--color-rail-900) / <alpha-value>)',
+          950: 'rgb(var(--color-rail-950) / <alpha-value>)',
         },
         accent: {
           50: '#fff8eb',
@@ -48,13 +48,14 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['Merriweather', 'Georgia', 'serif'],
         mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
       },
       boxShadow: {
         'soft': '0 1px 3px 0 rgba(0,0,0,0.07), 0 1px 2px 0 rgba(0,0,0,0.04)',
         'card': '0 2px 8px -2px rgba(0,0,0,0.08), 0 1px 4px -1px rgba(0,0,0,0.04)',
         'elevated': '0 4px 16px -4px rgba(0,0,0,0.12), 0 2px 8px -2px rgba(0,0,0,0.06)',
-        'glow-rail': '0 0 0 3px rgba(36,90,152,0.15)',
+        'glow-rail': '0 0 0 3px rgb(var(--color-rail-600) / 0.15)',
         'glow-accent': '0 0 0 3px rgba(245,158,11,0.15)',
       },
       animation: {

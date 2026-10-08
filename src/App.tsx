@@ -26,7 +26,6 @@ import Modules from './pages/Modules';
 import TechStack from './pages/TechStack';
 import AiWorkflow from './pages/AiWorkflow';
 import QrLifecycle from './pages/QrLifecycle';
-import RailRadar from './pages/RailRadar';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -59,7 +58,6 @@ export default function App() {
               <Route path="/tech-stack" element={<ProtectedRoute roles={['admin', 'engineer']}><Layout><TechStack /></Layout></ProtectedRoute>} />
               <Route path="/ai-workflow" element={<ProtectedRoute roles={['admin', 'engineer']}><Layout><AiWorkflow /></Layout></ProtectedRoute>} />
               <Route path="/qr-lifecycle" element={<ProtectedRoute roles={['admin', 'engineer']}><Layout><QrLifecycle /></Layout></ProtectedRoute>} />
-              <Route path="/railradar" element={<ProtectedRoute><Layout><RailRadar /></Layout></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

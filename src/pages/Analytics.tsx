@@ -9,7 +9,7 @@ import { useTheme } from '../lib/theme';
 import { useToast } from '../lib/toast';
 
 export default function Analytics() {
-  const { theme } = useTheme();
+  const { theme, palette: currentPalette } = useTheme();
   const toast = useToast();
   const [loading, setLoading] = useState(true);
   const [monthly, setMonthly] = useState<{ labels: string[]; pass: number[]; fail: number[] } | null>(null);
@@ -45,7 +45,10 @@ export default function Analytics() {
   const isDark = theme === 'dark';
   const gridColor = isDark ? 'rgba(148,163,184,0.1)' : 'rgba(100,116,139,0.1)';
   const tickColor = isDark ? '#94a3b8' : '#64748b';
-  const palette = ['#245a98', '#3573b5', '#5a93cb', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#84cc16'];
+  const isSophia = currentPalette === 'sophia';
+  const palette = isSophia
+    ? ['#954e26', '#bd6230', '#da875a', '#d29878', '#7c3812', '#4d3422', '#10b981', '#ef4444', '#f59e0b', '#8b5cf6']
+    : ['#245a98', '#3573b5', '#5a93cb', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#84cc16'];
 
   return (
     <>
