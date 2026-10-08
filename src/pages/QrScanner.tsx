@@ -9,6 +9,7 @@ import { useAuth } from '../lib/auth';
 import { useToast } from '../lib/toast';
 import { logAudit } from '../lib/audit';
 import { Html5Qrcode } from 'html5-qrcode';
+import { createComplaintRecord, parseComplaintRecord, notifyNewComplaint } from '../lib/complaintsService';
 
 export default function QrScanner() {
   const { session } = useAuth();
@@ -53,7 +54,7 @@ export default function QrScanner() {
       ]);
       setInspections((insp ?? []) as Inspection[]);
       setMaintenance((maint ?? []) as MaintenanceLog[]);
-      setComplaints((comp ?? []) as Complaint[]);
+      setComplaints(((comp ?? []).map(parseComplaintRecord)) as Complaint[]);
     } catch (e) { setError(e instanceof Error ? e.message : 'Lookup failed'); }
     finally { setLoading(false); }
   }
@@ -111,38 +112,27 @@ export default function QrScanner() {
     if (!result) return;
     setSavingComplaint(true);
     try {
-      let photoUrl: string | null = null;
-      if (complaintPhoto) {
-        const extension = complaintPhoto.name.split('.').pop()?.toLowerCase() || 'jpg';
-        const path = `${session?.user.id ?? 'staff'}/${crypto.randomUUID()}.${extension}`;
-        const { error: uploadError } = await supabase.storage.from('complaint-photos').upload(path, complaintPhoto, { contentType: complaintPhoto.type, upsert: false });
-        if (uploadError) throw uploadError;
-        photoUrl = supabase.storage.from('complaint-photos').getPublicUrl(path).data.publicUrl;
-      }
-      const { error } = await supabase.from('complaints').insert({
-        fit_id: result.id, qr_id: result.qr_id,
+      await createComplaintRecord({
+        fit_id: result.id,
+        qr_id: result.qr_id,
         complaint_type: complaintForm.complaint_type,
         priority: complaintForm.priority,
         description: complaintForm.description,
-        photo_url: photoUrl,
         is_defect: markAsDefect,
-        status: 'Open',
+        photo: complaintPhoto,
         registered_by: session?.user.id ?? null,
       });
-      if (error) throw error;
-      await supabase.from('notifications').insert({
-        type: 'new_complaint', title: 'New Complaint Registered',
-        message: `${complaintForm.complaint_type} for ${result.qr_id} (${result.component_id}) — Priority: ${complaintForm.priority}`,
-        fit_id: result.id,
-      });
-      await logAudit(session?.user.id ?? null, 'register_complaint', 'complaint', null, `${complaintForm.complaint_type} for ${result.qr_id}`);
+
+      notifyNewComplaint(result.id, `${result.qr_id} (${result.component_id})`, complaintForm.complaint_type, complaintForm.priority).catch(() => {});
+      logAudit(session?.user.id ?? null, 'register_complaint', 'complaint', null, `${complaintForm.complaint_type} for ${result.qr_id}`).catch(() => {});
+
       setComplaintModalOpen(false);
       setComplaintForm({ complaint_type: 'Component Damage', priority: 'Medium', description: '' });
       setMarkAsDefect(true);
       clearComplaintPhoto();
       toast('success', 'Complaint registered successfully');
       const { data } = await supabase.from('complaints').select('*').eq('fit_id', result.id).order('created_at', { ascending: false }).limit(10);
-      setComplaints((data ?? []) as Complaint[]);
+      setComplaints(((data ?? []).map(parseComplaintRecord)) as Complaint[]);
     } catch (err) { toast('error', err instanceof Error ? err.message : 'Failed to register complaint'); }
     finally { setSavingComplaint(false); }
   }

@@ -45,10 +45,12 @@ export default function Notifications() {
       {loading ? <LoadingSpinner label="Loading notifications..." /> : notifs.length === 0 ? <div className="card"><EmptyState icon={Bell} title="No notifications" message="Alerts will appear here when inspections fail, maintenance is due, or complaints are registered." /></div> : (
         <div className="space-y-2">
           {notifs.map((n, i) => {
-            const Icon = ICONS[n.type] ?? Info;
+            const isComplaint = n.type === 'new_complaint' || n.title.toLowerCase().includes('complaint');
+            const Icon = isComplaint ? MessageSquareWarning : (ICONS[n.type] ?? Info);
+            const tone = isComplaint ? TONES.new_complaint : (TONES[n.type] ?? TONES.general);
             return (
               <motion.div key={n.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.02 }} className={`card flex items-center gap-3 p-4 ${!n.read ? 'border-l-4 border-l-rail-500' : 'opacity-70'}`}>
-                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${TONES[n.type] ?? TONES.general}`}><Icon size={20} /></div>
+                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${tone}`}><Icon size={20} /></div>
                 <div className="flex-1"><p className="text-sm font-semibold text-slate-800 dark:text-slate-100">{n.title}</p><p className="text-sm text-slate-500 dark:text-slate-400">{n.message}</p><p className="mt-0.5 text-xs text-slate-400">{new Date(n.created_at).toLocaleString()}</p></div>
                 <div className="flex gap-1">{!n.read && <button onClick={() => markRead(n)} className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-rail-800" title="Mark read"><CheckCheck size={16} /></button>}<button onClick={() => deleteNotif(n)} className="rounded-lg p-2 text-slate-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10" title="Delete"><Trash2 size={16} /></button></div>
               </motion.div>

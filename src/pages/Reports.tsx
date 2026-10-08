@@ -14,6 +14,7 @@ import { supabase, type TrackFitting, type Inspection, type MaintenanceLog, type
 import { useAuth } from '../lib/auth';
 import { useTheme } from '../lib/theme';
 import { exportExcel } from '../lib/qr';
+import { parseComplaintRecord } from '../lib/complaintsService';
 
 type ReportRow = { fitting: TrackFitting; inspections: Inspection[]; maintenance: MaintenanceLog[]; complaints: Complaint[] };
 type Period = 'daily' | 'weekly' | 'monthly';
@@ -53,7 +54,7 @@ export default function Reports() {
         ]);
         (fitInsp ?? []).forEach((i: any) => { inspMap[i.fit_id] = [...(inspMap[i.fit_id] ?? []), i]; });
         (fitMaint ?? []).forEach((m: any) => { maintMap[m.fit_id] = [...(maintMap[m.fit_id] ?? []), m]; });
-        (comp ?? []).forEach((c: any) => { compMap[c.fit_id] = [...(compMap[c.fit_id] ?? []), c]; });
+        (comp ?? []).forEach((c: any) => { compMap[c.fit_id] = [...(compMap[c.fit_id] ?? []), parseComplaintRecord(c)]; });
       }
       setRows(fitData.map((f) => ({ fitting: f, inspections: inspMap[f.id] ?? [], maintenance: maintMap[f.id] ?? [], complaints: compMap[f.id] ?? [] })));
       setAllInspections((insp ?? []) as Inspection[]);

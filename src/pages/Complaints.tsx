@@ -9,6 +9,7 @@ import { useAuth } from '../lib/auth';
 import { useToast } from '../lib/toast';
 import { logAudit } from '../lib/audit';
 import { exportCsv } from '../lib/qr';
+import { createComplaintRecord, parseComplaintRecord, notifyNewComplaint } from '../lib/complaintsService';
 
 const PAGE_SIZE = 8;
 
@@ -48,7 +49,7 @@ export default function Complaints() {
     query = query.order('created_at', { ascending: false }).range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
     const { data, count, error } = await query;
     if (error) { toast('error', error.message); setLoading(false); return; }
-    const compData = (data ?? []) as Complaint[];
+    const compData = (data ?? []).map(parseComplaintRecord) as Complaint[];
     const fitIds = [...new Set(compData.map((c) => c.fit_id).filter((v): v is string => v !== null))];
     let fitMap: Record<string, TrackFitting> = {};
     if (fitIds.length > 0) {
@@ -101,22 +102,31 @@ export default function Complaints() {
     if (!fitting) { toast('error', 'Select a track fitting.'); return; }
     setSaving(true);
     try {
-      let photoUrl: string | null = null;
-      if (photo) {
-        const extension = photo.name.split('.').pop()?.toLowerCase() || 'jpg';
-        const path = `${session?.user.id ?? 'staff'}/${crypto.randomUUID()}.${extension}`;
-        const { error: uploadError } = await supabase.storage.from('complaint-photos').upload(path, photo, { contentType: photo.type, upsert: false });
-        if (uploadError) throw uploadError;
-        photoUrl = supabase.storage.from('complaint-photos').getPublicUrl(path).data.publicUrl;
-      }
-      const { error } = await supabase.from('complaints').insert({ fit_id: fitting.id, qr_id: fitting.qr_id, complaint_type: form.complaintType, priority: form.priority, description: form.description, is_defect: form.isDefect, photo_url: photoUrl, status: 'Open', registered_by: session?.user.id ?? null });
-      if (error) throw error;
-      await supabase.from('notifications').insert({ type: 'new_complaint', title: 'New Complaint Registered', message: `${form.complaintType} for ${fitting.qr_id} (${fitting.component_id}) — Priority: ${form.priority}`, fit_id: fitting.id });
-      await logAudit(session?.user.id ?? null, 'register_complaint', 'complaint', null, `${form.complaintType} for ${fitting.qr_id}`);
+      await createComplaintRecord({
+        fit_id: fitting.id,
+        qr_id: fitting.qr_id,
+        complaint_type: form.complaintType,
+        priority: form.priority,
+        description: form.description,
+        is_defect: form.isDefect,
+        photo,
+        registered_by: session?.user.id ?? null,
+      });
+
+      // Dispatch notification & audit log (non-fatal)
+      notifyNewComplaint(fitting.id, `${fitting.qr_id} (${fitting.component_id})`, form.complaintType, form.priority).catch(() => {});
+      logAudit(session?.user.id ?? null, 'register_complaint', 'complaint', null, `${form.complaintType} for ${fitting.qr_id}`).catch(() => {});
+
       toast('success', 'Complaint registered successfully');
-      setRegisterOpen(false); setForm({ fitId: '', complaintType: 'Component Damage', priority: 'Medium', description: '', isDefect: true }); clearEvidencePhoto(); load();
-    } catch (error) { toast('error', error instanceof Error ? error.message : 'Failed to register complaint'); }
-    finally { setSaving(false); }
+      setRegisterOpen(false);
+      setForm({ fitId: '', complaintType: 'Component Damage', priority: 'Medium', description: '', isDefect: true });
+      clearEvidencePhoto();
+      load();
+    } catch (error) {
+      toast('error', error instanceof Error ? error.message : 'Failed to register complaint');
+    } finally {
+      setSaving(false);
+    }
   }
 
   async function updateStatus(c: Complaint, status: Complaint['status']) {
