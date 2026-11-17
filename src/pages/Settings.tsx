@@ -94,11 +94,11 @@ export default function Settings() {
                 <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Appearance & Theme</h2>
               </div>
               <span className="badge bg-rail-500/15 text-rail-700 dark:text-rail-300">
-                {palette === 'sophia' ? 'Sophia Pro' : 'Classic Blue'}
+                {palette === 'sophia' ? 'Peach cream' : 'Classic Blue'}
               </span>
             </div>
             <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
-              Customize the look and feel of RailQR AI. Switch between the classic Indian Railways industrial theme and the refined Sophia Pro editorial theme.
+              Customize the look and feel of RailQR AI. Switch between the classic Indian Railways industrial theme and the refined Peach cream editorial theme.
             </p>
 
             <div className="space-y-4">
@@ -135,12 +135,12 @@ export default function Settings() {
                     </div>
                   </button>
 
-                  {/* Sophia Pro Option */}
+                  {/* Peach cream Option */}
                   <button
                     type="button"
                     onClick={() => {
                       setPalette('sophia');
-                      toast('success', 'Switched to Sophia Pro theme');
+                      toast('success', 'Switched to Peach cream theme');
                     }}
                     className={`flex flex-col items-start rounded-xl border p-3.5 text-left transition-all ${
                       palette === 'sophia'
@@ -150,9 +150,9 @@ export default function Settings() {
                   >
                     <div className="flex w-full items-center justify-between">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-sm font-semibold text-slate-900 dark:text-white">Sophia Pro</span>
+                        <span className="text-sm font-semibold text-slate-900 dark:text-white">Peach cream</span>
                         <span className="inline-flex items-center gap-0.5 rounded-full bg-[#f7daca] px-1.5 py-0.5 text-[10px] font-bold text-[#7c3812] dark:bg-[#4d3422] dark:text-[#f8d4c2]">
-                          <Sparkles size={10} /> Pro
+                          <Sparkles size={10} /> 
                         </span>
                       </div>
                       {palette === 'sophia' && <CheckCircle2 size={16} className="text-[#954e26] dark:text-[#d29878]" />}
